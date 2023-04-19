@@ -230,63 +230,108 @@ const getSolicitudes = async () => {
 
         
         let _data = new FormData();
-        _data.append('idSolicitud', id);
+        _data.append('idSolictud', id);
 
-        let res_1 = axios.post(`http://sci.unimundial.edu.mx/modelos/serviciosLibreria.php?accion=prestarLibro`, _data)
+        return axios.post(`http://sci.unimundial.edu.mx/modelos/serviciosLibreria.php?accion=prestarLibro`, _data)
         .then((res1) => {
 
+          //si response es true entonces se actualiza el estado de la solicitud muestra un swal y se redirecciona a la pagina de prestamos
+          if(res1.data.response == true){
 
-          let res_2 = axios.post(`http://sci.unimundial.edu.mx/modelos/serviciosLibreria.php?accion=getPrestamo`, _data)
-          .then((res2) => {
-            console.log(res2.data);
-  
-            if(res2.data.length == 0){
-              
-              if(res1.data[0].status != "Activo"){
+            Swal.fire({
+              title: "Prestamo realizado",
+              text: "El prestamo se realizo correctamente",
+              icon: "success",
+              showCancelButton: false,
+              confirmButtonText: 'Aceptar',
+              showLoaderOnConfirm: true,
+              preConfirm: (login) => {
+                getSolicitudes();
+                return true;
+              },
+              allowOutsideClick: () => !Swal.isLoading()
+            })
 
-                
-              Swal.fire({
-                icon: 'error',
-                html: '<h3>La solicitud ya fue cancelada</h3> <br /> <p>Recuerda que solo tenias 72 horas para recolectar el libro</p>',
-                showConfirmButton: true,
-                confirmButtonText: 'Aceptar',
-                confirmButtonColor: '#784af4'
-              })
-
-
-              }else {
-
-                Swal.fire({
-                  icon: 'info',
-                  html: '<h3>Aun no has recolectado el libro</h3> <br /> <p>Recuerda que tienes 72 horas para recolectar el libro</p>',
-                  showConfirmButton: true,
-                  confirmButtonText: 'Aceptar',
-                  confirmButtonColor: '#784af4'
-                })
-
-              }
-  
-            } else{
-
-              window.location.href = `/prestamo/${id}`;
-
-
-            }
-            
-          })
-          
-          .catch((err) => {
-            console.log(err);
+          }else{
+            //si response es false entonces se muestra un swal con el error
+            Swal.fire({
+              title: "Error",
+              text: res1.data.mensaje,
+              icon: "error",
+              showCancelButton: false,
+              confirmButtonText: 'Aceptar',
+              showLoaderOnConfirm: true,
+              preConfirm: (login) => {
+                return true;
+              },
+              allowOutsideClick: () => !Swal.isLoading()
+            })
           }
-          )
-       
+
         })
 
-
-       
-
-        
       }
+
+
+                
+
+
+      const verRechazo = (id) => {
+
+        console.log(id);
+
+        let _data = new FormData();
+
+        _data.append('idSolicitud', id);
+
+
+        //mostrar swal para que confirmen el rechazo y de un motivo de rechazo
+        Swal.fire({
+          title: "¿Estas seguro de rechazar la solicitud?",
+          text: "Escribe el motivo de rechazo",
+          icon: "warning",
+          input: 'text',
+          inputAttributes: {
+            autocapitalize: 'off'
+          },
+          showCancelButton: true,
+          confirmButtonText: 'Rechazar',
+          showLoaderOnConfirm: true,
+          preConfirm: (login) => {
+            _data.append('motivoRechazo', login);
+            return axios.post(`http://sci.unimundial.edu.mx/modelos/serviciosLibreria.php?accion=cancelarSolicitud`, _data)
+            .then((res) => {
+
+              console.log(res.data);
+              if(res.data.response == true){
+                Swal.fire({
+                  title: "Solicitud rechazada",
+                  html: res.data.mensaje,
+                  icon: "success",
+                  button: "Aceptar",
+                }).then(() => {
+                  getSolicitudes();
+                });
+              }else{
+                Swal.fire({
+                  title: "Error",
+                  text: res.data.mensaje,
+                  icon: "error",
+                  button: "Aceptar",
+                });
+              }
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+          },
+          allowOutsideClick: () => !Swal.isLoading()
+        })
+      }
+
+
+          
+   
 
 
 
@@ -300,14 +345,18 @@ const getSolicitudes = async () => {
             <h1 className="text-center" style={{color: 'purple'}}>SOLICITUDES</h1>
         </div>
     </div>
-    <div className="row">
+    
     {solicitudes.length < 1 ? (
+          <div className="row">
+
       <div className="col-12">
 
         <br />
         <h3 className="text-center" style={{color: 'purple'}}>No tienes solicitudes pero eres admin</h3>
       </div>
+    </div>
     ) : (
+      <div className="row">
       <div className="col-12">
         {solicitudes.map((solicitud) => (
           
@@ -376,7 +425,7 @@ const getSolicitudes = async () => {
                <Button variant="outlined" 
                 color="error" size="small"
                 style={{marginLeft: '10px'}}
-                onClick={() => handleDelete(solicitud.id)}>Cancelar</Button>
+                onClick={() => verRechazo(solicitud.id)}>Rechazar</Button>
 
 
 
@@ -393,12 +442,13 @@ const getSolicitudes = async () => {
       />
    </Card>
    
-            </div>
+    </div>
         ))}
       </div>
-    )}
     </div>
+    )}
   </div>
+
 
 
             

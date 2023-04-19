@@ -258,7 +258,7 @@ const Prestamo = () => {
                 <br/>
                 <i>Estado: {data.status}</i>
                 <br/>
-                {data.status != 'vencido' && data.status == 'entregado' ?  <i>Recuerda que solo tienes hasta el {moment(data.fechaPrestamo).add(3, 'days').format('YYYY-MM-DD') } para entregar el libro sin que se te cobre una multa de $100 Mxn por dia de retraso</i> :
+                {data.status != 'vencido' && data.status == 'Activo' ?  <i>Recuerda que solo tienes hasta el {moment(data.fechaPrestamo).add(3, 'days').format('YYYY-MM-DD') } para entregar el libro sin que se te cobre una multa de $100 Mxn por dia de retraso</i> :
                 data.status == 'vencido' ? <i>Se te cobrara una multa de $100 Mxn por dia de retraso</i>
                 : <i>Fecha de entrega: {data.fechaPrestamo}</i>  }
 
@@ -383,7 +383,7 @@ const Prestamo = () => {
                         <b>Gracias por tu dedicacion</b>
                     </div>
                     : <div>
-                        <i className="fas fa-check-circle" style={{color: 'white', fontSize: '15px'}}>  </i>  <b>Libro Entregado</b>
+                        <i className="fas fa-times-circle" style={{color: 'red', fontSize: '15px'}}>  </i>  <b>Libro Sin Entregar</b>
                         <br/>
                          <b>Multa: $0 Mxn</b>
                     </div>

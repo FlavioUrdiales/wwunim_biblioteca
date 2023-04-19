@@ -242,7 +242,7 @@ const getSolicitudes = async () => {
   
             if(res2.data.length == 0){
               
-              if(res1.data[0].status != "Activo"){
+              if(res1.data[0].status != "Prestado"){
 
                 
               Swal.fire({
