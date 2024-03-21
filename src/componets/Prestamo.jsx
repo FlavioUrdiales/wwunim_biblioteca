@@ -234,8 +234,8 @@ const Prestamo = () => {
     <Navbar/>
     <br/>
     <br/>
-    <div className="container">
-        <div className="row" style={{backgroundColor: 'purple', color: 'white', padding: '20px', borderRadius: '10px'}}>
+    <div className="container"> 
+        <div className="row" style={{backgroundImage: "linear-gradient(to right, #21012b, #21012b, #21012b)", color: 'white', padding: '20px', borderRadius: '10px'}}>
             <div className="col-md-3" style={{textAlign: 'center' , fontSize: '20px', backgroundColor: 'white', padding: '20px', borderRadius: '100%', height: '100px', width: '100px', marginLeft: 'auto', marginRight: 'auto'}}> 
 
                 
@@ -306,7 +306,7 @@ const Prestamo = () => {
                         <TimelineItem>
                         <TimelineOppositeContent>
                             <Typography variant="body2" color="white">
-                            JAT
+                            San francisco
                             </Typography>
                         </TimelineOppositeContent>
                         <TimelineSeparator>
