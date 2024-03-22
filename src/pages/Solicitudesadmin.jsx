@@ -329,12 +329,6 @@ const getSolicitudes = async () => {
         })
       }
 
-
-          
-   
-
-
-
   return (
     <>
     <Navbar />
@@ -347,9 +341,13 @@ const getSolicitudes = async () => {
     </div>
     
     {solicitudes.length < 1 ? (
-          <div className="row">
 
-      <div className="col-12">
+
+          <div className="row">
+         <div className="col-12">
+
+
+
 
         <br />
         <h3 className="text-center" style={{color: 'purple'}}>No tienes solicitudes pero eres admin</h3>
@@ -433,7 +431,7 @@ const getSolicitudes = async () => {
      
      </Box>
  
-         
+
  <CardMedia
         component="img"
         sx={{ width: 151 }}
