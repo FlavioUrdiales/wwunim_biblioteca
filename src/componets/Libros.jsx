@@ -46,17 +46,10 @@ const Libros = () => {
 
   const [open, setOpen] = React.useState(false);
 
-
-
- 
-
-
-
-
-    const [books, setBooks] = useState([])
+  const [books, setBooks] = useState([])
        
       const consultarlibros = async () => {
-        const res = await axios.get('http://sci.unimundial.edu.mx/modelos/serviciosLibreria.php?accion=consultarlibros ');
+        const res = await axios.get('http://sci.unimundial.edu.mx/modelos/serviciosLibreria.php?accion=consultarlibros');
         const data = await res.data;
         console.log(data);
         setBooks(data);
@@ -69,9 +62,6 @@ const Libros = () => {
       }, [])
 
 
-
-    
-    
       const handleSearch  = (e) => {
 
         if (e.target.value === '') {
@@ -121,10 +111,6 @@ const Libros = () => {
       ),
     }}
     />
-
-          
-
-
     
           </Stack>
           <br/>
@@ -233,13 +219,6 @@ const Libros = () => {
                         <Stack direction="row" spacing={1}>
                           {book.ejemplares < 1 ? <Chip label="Prestado" color="error" variant='outlined' size="small"  /> : <Chip label="Disponible" color="success" variant='outlined' size="small"   /> }
           </Stack>
-
-
-
-      
-
-                  
-
               
               </div>
               </div>

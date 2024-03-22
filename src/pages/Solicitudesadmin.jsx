@@ -273,8 +273,6 @@ const getSolicitudes = async () => {
       }
 
 
-                
-
 
       const verRechazo = (id) => {
 
