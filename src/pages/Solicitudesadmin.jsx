@@ -324,9 +324,6 @@ const getSolicitudes = async () => {
           <div className="row">
          <div className="col-12">
 
-
-
-
         <br />
         <h3 className="text-center" style={{color: 'purple'}}>No tienes solicitudes pero eres admin</h3>
       </div>

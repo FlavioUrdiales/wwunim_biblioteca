@@ -3,14 +3,6 @@ import "./not.css"
 
 const NotFound = () => {
   return (
-
-
-
-
-
-
-
-
     <>
     
     

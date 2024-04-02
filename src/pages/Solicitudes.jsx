@@ -266,15 +266,8 @@ const getSolicitudes = async () => {
           }
           )
        
-        })
-
-
-       
-
-        
+        })        
       }
-
-
 
   return (
     <>
@@ -285,7 +278,7 @@ const getSolicitudes = async () => {
         <div className="col-12">
             <h1 className="text-center" style={{color: 'purple'}}>MIS SOLICITUDES</h1>
         </div>
-    </div>
+    </div> 
     <div className="row">
     {solicitudes.length < 1 ? (
       <div className="col-12">
@@ -294,7 +287,7 @@ const getSolicitudes = async () => {
         <h3 className="text-center" style={{color: 'purple'}}>No tienes solicitudes</h3>
       </div>
     ) : (
-      <div className="col-12">
+        <div className="row">
         {solicitudes.map((solicitud) => (
           
 
@@ -381,15 +374,10 @@ const getSolicitudes = async () => {
             </div>
         ))}
       </div>
+    
     )}
     </div>
   </div>
-
-
-            
-    
-
-
     </>
 
 

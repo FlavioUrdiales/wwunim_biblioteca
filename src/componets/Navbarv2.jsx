@@ -172,7 +172,7 @@ export const Navbar = () => {
 
               {datosSesion.chrTipoUsuario == "usuario" && (
         <li class="nav-item" style={{marginLeft: "10 px"}}>
-          <Link class="nav-link" to="/viewindex">Devoluciones</Link>
+          <Link class="nav-link" to="/Devolucion">Devoluciones</Link>
         </li>
         ) }
 
