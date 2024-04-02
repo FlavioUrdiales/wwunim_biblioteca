@@ -24,10 +24,10 @@ const Libros = () => {
 
 
 
-    const [books, setBooks] = useState([])
+  const [books, setBooks] = useState([])
        
       const consultarlibros = async () => {
-        const res = await axios.get('http://sci.unimundial.edu.mx/modelos/serviciosLibreria.php?accion=consultarlibros ');
+        const res = await axios.get('http://sci.unimundial.edu.mx/modelos/serviciosLibreria.php?accion=consultarlibros');
         const data = await res.data;
         console.log(data);
         setBooks(data);
@@ -40,9 +40,6 @@ const Libros = () => {
       }, [])
 
 
-
-    
-    
       const handleSearch  = (e) => {
 
         if (e.target.value === '') {

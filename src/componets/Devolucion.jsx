@@ -18,14 +18,14 @@ import { Button } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import Swal from 'sweetalert2';
 
-const Solicitudesadmin = () => {
+const Devolucion = () => {
 
     const theme = useTheme();
 
-const [solicitudes, setSolicitudes] = useState([])
+const [devoluciones, setDevolucion] = useState([])
 
 
-const getSolicitudes = async () => {
+const getDevolucion = async () => {
 
     let dataAlumno = JSON.parse(sessionStorage.getItem('datos'));
     let idAlumno = dataAlumno.chrClave;
@@ -36,14 +36,14 @@ const getSolicitudes = async () => {
 
     const res = await axios.post('http://sci.unimundial.edu.mx/modelos/serviciosLibreria.php?accion=consultarSolitudes' , _data)
 
-    setSolicitudes(res.data)
+    setDevoluciones(res.data)
 
     console.log(res.data)
 
     }
 
     useEffect(() => {
-        getSolicitudes()
+        getDevolucion()
 
     }, [])
 
@@ -199,113 +199,6 @@ const getSolicitudes = async () => {
          */
         icon: PropTypes.node,
       };
-      
-      const steps = ['Solicitalo', 'Recolectalo antes de 72h', 'Entregalo antes de 72h'];
-      
-
-
-      const verPrestamo = (id) => {
-        
-        console.log(id);
-
-        
-        let _data = new FormData();
-        _data.append('idSolictud', id);
-
-        return axios.post(`http://sci.unimundial.edu.mx/modelos/serviciosLibreria.php?accion=prestarLibro`, _data)
-        .then((res1) => {
-
-          //si response es true entonces se actualiza el estado de la solicitud muestra un swal y se redirecciona a la pagina de prestamos
-          if(res1.data.response == true){
-
-            Swal.fire({
-              title: "Prestamo realizado",
-              text: "El prestamo se realizo correctamente",
-              icon: "success",
-              showCancelButton: false,
-              confirmButtonText: 'Aceptar',
-              showLoaderOnConfirm: true,
-              preConfirm: (login) => {
-                getSolicitudes();
-                return true;
-              },
-              allowOutsideClick: () => !Swal.isLoading()
-            })
-
-          }else{
-            //si response es false entonces se muestra un swal con el error
-            Swal.fire({
-              title: "Error",
-              text: res1.data.mensaje,
-              icon: "error",
-              showCancelButton: false,
-              confirmButtonText: 'Aceptar',
-              showLoaderOnConfirm: true,
-              preConfirm: (login) => {
-                return true;
-              },
-              allowOutsideClick: () => !Swal.isLoading()
-            })
-          }
-
-        })
-
-      }
-
-
-
-      const verRechazo = (id) => {
-
-        console.log(id);
-
-        let _data = new FormData();
-
-        _data.append('idSolicitud', id);
-
-
-        //mostrar swal para que confirmen el rechazo y de un motivo de rechazo
-        Swal.fire({
-          title: "¿Estas seguro de rechazar la solicitud?",
-          text: "Escribe el motivo de rechazo",
-          icon: "warning",
-          input: 'text',
-          inputAttributes: {
-            autocapitalize: 'off'
-          },
-          showCancelButton: true,
-          confirmButtonText: 'Rechazar',
-          showLoaderOnConfirm: true,
-          preConfirm: (login) => {
-            _data.append('motivoRechazo', login);
-            return axios.post(`http://sci.unimundial.edu.mx/modelos/serviciosLibreria.php?accion=cancelarSolicitud`, _data)
-            .then((res) => {
-
-              console.log(res.data);
-              if(res.data.response == true){
-                Swal.fire({
-                  title: "Solicitud rechazada",
-                  html: res.data.mensaje,
-                  icon: "success",
-                  button: "Aceptar",
-                }).then(() => {
-                  getSolicitudes();
-                });
-              }else{
-                Swal.fire({
-                  title: "Error",
-                  text: res.data.mensaje,
-                  icon: "error",
-                  button: "Aceptar",
-                });
-              }
-            })
-            .catch((error) => {
-              console.log(error);
-            });
-          },
-          allowOutsideClick: () => !Swal.isLoading()
-        })
-      }
 
   return (
     <>
@@ -314,24 +207,27 @@ const getSolicitudes = async () => {
   <div className="container">
     <div className="row">
         <div className="col-12">
-            <h1 className="text-center" style={{color: 'purple'}}>SOLICITUDES</h1>
+            <h1 className="text-center" style={{color: 'purple'}}>Devoluciones</h1>
         </div>
     </div>
     
-    {solicitudes.length < 1 ? (
+    {devoluciones.length < 1 ? (
 
 
           <div className="row">
          <div className="col-12">
 
+
+
+
         <br />
-        <h3 className="text-center" style={{color: 'purple'}}>No tienes solicitudes pero eres admin</h3>
+        <h3 className="text-center" style={{color: 'purple'}}>No tienes devoluciones pero eres admin</h3>
       </div>
     </div>
     ) : (
       <div className="row">
       <div className="col-12">
-        {solicitudes.map((solicitud) => (
+        {devoluciones.map((devolucion) => (
           
 
             <div className="col-12 col-md-6 col-lg-4">
@@ -341,29 +237,29 @@ const getSolicitudes = async () => {
      <Box sx={{ display: 'flex', flexDirection: 'column' }}>
        <CardContent sx={{ flex: '1 0 auto' }}>
          <Typography component="div" variant="h6">
-           {solicitud.titulo}
+           {devolucion.titulo}
          </Typography>
             <Typography variant="subtitle1" color="text.secondary" component="div">
-              {solicitud.nombreAlumno}
+              {devolucion.nombreAlumno}
               
 
             </Typography>
             <Typography variant="subtitle1" color="text.secondary" component="div">
-              {solicitud.fechaSolicitud}
+              {devolucion.fechaSolicitud}
               
 
             </Typography>
             <Typography variant="subtitle1" color="text.secondary" component="div">
-                {solicitud.status === "Activo" ? (
+                {devolucion.status === "Activo" ? (
                     <span className="badge bg-success">{solicitud.status}</span>
 
                     
                 ) : (
-                  solicitud.status === "Prestado" ? (
+                    devolucion.status === "Prestado" ? (
 
                     <span className="badge bg-success">Recogido</span>
                   ) : (
-                    <span className="badge bg-danger">{solicitud.status}</span>
+                    <span className="badge bg-danger">{devolucion.status}</span>
                   
                   )
 
@@ -371,7 +267,7 @@ const getSolicitudes = async () => {
 
                 <span   style={{marginLeft: '10px', color: 'white', backgroundColor: 'purple',
                  borderRadius: '5px', padding: '3px', fontSize: '12px', fontWeight: 'bold'}}>
-                    {solicitud.biblioteca}
+                    {devolucion.biblioteca}
                 </span>
             </Typography>
 
@@ -382,7 +278,7 @@ const getSolicitudes = async () => {
 
                         <div className="col-12">
                         <Typography variant="subtitle1" color="text.secondary" component="div">
-                        {solicitud.motivo}
+                        {devolucion.motivo}
                         </Typography>
                      
                         </div>
@@ -410,7 +306,7 @@ const getSolicitudes = async () => {
  <CardMedia
         component="img"
         sx={{ width: 151 }}
-        image={solicitud.img}
+        image={devolucion.img}
         alt="Live from space album cover"
       />
    </Card>
@@ -422,12 +318,6 @@ const getSolicitudes = async () => {
     )}
   </div>
 
-
-
-            
-    
-
-
     </>
 
 
@@ -435,4 +325,4 @@ const getSolicitudes = async () => {
   )
 }
 
-export default Solicitudesadmin 
+export default Devolucion 

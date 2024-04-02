@@ -203,4 +203,4 @@ const Peliculas = () => {
   )
 }
 
-export default Peliculas
+export default Peliculas 
