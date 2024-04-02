@@ -43,11 +43,9 @@ export const Navbar = () => {
 
  useEffect(() => {
     const datos = sessionStorage.getItem('datos');
-
+    let data = JSON.parse(datos)
     if (datos) {
       setDatosSesion(JSON.parse(datos));
-      console.log(datosSesion);
-      console.log(datosSesion.chrNombre);
     }
   }, []);
 
@@ -198,10 +196,11 @@ export const Navbar = () => {
           
         </li>
 
-
+        {datosSesion.chrTipoUsuario == "usuario" && (
         <li class="nav-item" style={{marginLeft: "10 px"}}>
           <Link class="nav-link" to="/viewindex">Devoluciones</Link>
         </li>
+        ) }
 
       </ul>      
 

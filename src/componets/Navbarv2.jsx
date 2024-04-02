@@ -1,37 +1,21 @@
 import React from 'react'
 import { Link, NavLink } from 'react-router-dom'
-import logo from '../assets/logo.png'
-import icon from '../assets/3_icon.png'
-import logo2 from '../assets/logo2.png'
-import LinearProgress from '@mui/material/LinearProgress';
-import Stack from '@mui/material/Stack';
-import logo_uhm from '../assets/logo_uhm.png'
-import { purple } from '@mui/material/colors'
 import "./style.css"
 import logo3 from '../assets/logo_footer.png'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import { Routes, Route } from 'react-router-dom';
 import Login from './login'
-import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
-import { Input } from '@mui/material'
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import TextField from '@mui/material/TextField';
 import { useState, useEffect } from 'react'
 import Button from '@mui/material/Button';
 import axios from 'axios';
-import Swal from 'sweetalert2'
 import Alert from '@mui/material/Alert';
 import Avatar from '@mui/material/Avatar';
-import { deepOrange, deepPurple, green, red } from '@mui/material/colors';
 import Badge from '@mui/material/Badge';
 import { styled } from '@mui/material/styles';
-
-
-
-
 
 
 export const Navbar = () => {
@@ -43,14 +27,12 @@ export const Navbar = () => {
 
   useEffect(() => {
     const datos = sessionStorage.getItem('datos');
-
+    let data = JSON.parse(datos)
     if (datos) {
       setDatosSesion(JSON.parse(datos));
-      console.log(datosSesion);
-      console.log(datosSesion.chrNombre);
     }
   }, []);
-
+ 
 
   const cerrarSesion = () => {
     sessionStorage.removeItem('datos');
@@ -159,20 +141,9 @@ export const Navbar = () => {
     <div>
       <Modal open={open} onClose={() => setOpen(false)}>
         <Box sx={style}>
-
-
           <Login />
-
-
-
-
-
-
         </Box>
       </Modal>
-
-
-
 
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark nav2" style={{ backgroundImage: "linear-gradient(to right, #21012b, #21012b, #21012b)" }}>
         <div class="container-fluid" >
@@ -199,9 +170,11 @@ export const Navbar = () => {
               </li>
 
 
-              <li class="nav-item" style={{ marginLeft: "10 px" }}>
-                <Link class="nav-link" to="/viewindex">Devoluciones</Link>
-              </li>
+              {datosSesion.chrTipoUsuario == "usuario" && (
+        <li class="nav-item" style={{marginLeft: "10 px"}}>
+          <Link class="nav-link" to="/viewindex">Devoluciones</Link>
+        </li>
+        ) }
 
             </ul>
 

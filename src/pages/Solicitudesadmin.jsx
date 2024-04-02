@@ -3,10 +3,6 @@ import React from 'react'
 import { useEffect , useState } from 'react'
 import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
-import Stack from '@mui/material/Stack';
-import Stepper from '@mui/material/Stepper';
-import Step from '@mui/material/Step';
-import StepLabel from '@mui/material/StepLabel';
 import Check from '@mui/icons-material/Check';
 import SettingsIcon from '@mui/icons-material/ManageSearch';
 import GroupAddIcon from '@mui/icons-material/Grading';
@@ -17,26 +13,12 @@ import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
-import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
-import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-import SkipNextIcon from '@mui/icons-material/SkipNext';
 import { Button } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import Timeline from '@mui/lab/Timeline';
-import TimelineItem from '@mui/lab/TimelineItem';
-import TimelineSeparator from '@mui/lab/TimelineSeparator';
-import TimelineConnector from '@mui/lab/TimelineConnector';
-import TimelineContent from '@mui/lab/TimelineContent';
-import TimelineDot from '@mui/lab/TimelineDot'
-import TimelineOppositeContent from '@mui/lab/TimelineOppositeContent';
-import LaptopMacIcon from '@mui/icons-material/LaptopMac';
-import Paper from '@mui/material/Paper';
 import Swal from 'sweetalert2';
 
 const Solicitudesadmin = () => {
-
 
     const theme = useTheme();
 
@@ -50,8 +32,6 @@ const getSolicitudes = async () => {
 
     let _data = new FormData();
     _data.append('idAlumno', idAlumno);
-
-
     _data.append('admin', true);
 
     const res = await axios.post('http://sci.unimundial.edu.mx/modelos/serviciosLibreria.php?accion=consultarSolitudes' , _data)
