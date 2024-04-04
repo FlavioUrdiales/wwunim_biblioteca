@@ -22,7 +22,7 @@ const Devolucion = () => {
 
     const theme = useTheme();
 
-const [devoluciones, setDevolucion] = useState([])
+const [devoluciones, setDevoluciones] = useState([])
 
 
 const getDevolucion = async () => {
@@ -34,7 +34,7 @@ const getDevolucion = async () => {
     _data.append('idAlumno', idAlumno);
     _data.append('admin', true);
 
-    const res = await axios.post('http://sci.unimundial.edu.mx/modelos/serviciosLibreria.php?accion=consultarSolitudes' , _data)
+    const res = await axios.post('http://localhost/modelos/serviciosLibreria.php?accion=consultarSolicitudesdos', _data)
 
     setDevoluciones(res.data)
 
@@ -200,6 +200,9 @@ const getDevolucion = async () => {
         icon: PropTypes.node,
       };
 
+
+
+
   return (
     <>
     <Navbar />
@@ -216,17 +219,12 @@ const getDevolucion = async () => {
 
           <div className="row">
          <div className="col-12">
-
-
-
-
         <br />
         <h3 className="text-center" style={{color: 'purple'}}>No tienes devoluciones pero eres admin</h3>
       </div>
     </div>
     ) : (
       <div className="row">
-      <div className="col-12">
         {devoluciones.map((devolucion) => (
           
 
@@ -251,9 +249,8 @@ const getDevolucion = async () => {
             </Typography>
             <Typography variant="subtitle1" color="text.secondary" component="div">
                 {devolucion.status === "Activo" ? (
-                    <span className="badge bg-success">{solicitud.status}</span>
-
-                    
+                    <span className="badge bg-success">{devolucion.status}</span>    
+                                    
                 ) : (
                     devolucion.status === "Prestado" ? (
 
@@ -262,18 +259,15 @@ const getDevolucion = async () => {
                     <span className="badge bg-danger">{devolucion.status}</span>
                   
                   )
-
                 )}
-
+                
                 <span   style={{marginLeft: '10px', color: 'white', backgroundColor: 'purple',
                  borderRadius: '5px', padding: '3px', fontSize: '12px', fontWeight: 'bold'}}>
                     {devolucion.biblioteca}
                 </span>
+
+          
             </Typography>
-
-       
-
-
                     <div className="row" style={{marginTop: '30px'}}>
 
                         <div className="col-12">
@@ -286,22 +280,32 @@ const getDevolucion = async () => {
                     
 
        </CardContent>
-         <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
-              <Button variant="outlined"
-              color="secondary" size="small"
-               onClick={() => verPrestamo(solicitud.id)}>Aceptar</Button>
 
-               <Button variant="outlined" 
-                color="error" size="small"
-                style={{marginLeft: '10px'}}
-                onClick={() => verRechazo(solicitud.id)}>Rechazar</Button>
+  
 
-
-
-                </Box>
-     
+         {devolucion.status === "Prestado" && (
+              <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
+              <Button variant="contained" color="primary" onClick={() => {
+                  Swal.fire({
+                      title: '¿Estás seguro de devolver este libro?',
+                      showDenyButton: true,
+                      confirmButtonText: `Si`,
+                      denyButtonText: `No`,
+                    }).then((result) => {
+                      /* Read more about isConfirmed, isDenied below */
+                      if (result.isConfirmed) {
+                          Swal.fire('Libro devuelto', '', 'success')
+                      } else if (result.isDenied) {
+                        Swal.fire('No se ha devuelto el libro', '', 'info')
+                      }
+                    }) 
+              }}>
+                  Devolver
+              </Button>
+          </Box>
+          ) } 
+            
      </Box>
- 
 
  <CardMedia
         component="img"
@@ -313,7 +317,7 @@ const getDevolucion = async () => {
    
     </div>
         ))}
-      </div>
+      
     </div>
     )}
   </div>

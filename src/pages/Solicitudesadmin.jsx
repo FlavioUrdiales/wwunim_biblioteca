@@ -376,10 +376,6 @@ const getSolicitudes = async () => {
                     {solicitud.biblioteca}
                 </span>
             </Typography>
-
-       
-
-
                     <div className="row" style={{marginTop: '30px'}}>
 
                         <div className="col-12">
@@ -403,18 +399,8 @@ const getSolicitudes = async () => {
                 style={{marginLeft: '10px'}}
                 onClick={() => verRechazo(solicitud.id)}>Rechazar</Button>
                 </Box>
-        ) : (
-          solicitud.status === "Prestado" & (
-            <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
-              <Button variant="outlined"
-              color="secondary" size="small"
-               onClick={() => verPrestamo(solicitud.id)}>Entregar</Button>
-                </Box>
-          ) 
-        )}
-     
+       ) :null}
      </Box>
- 
 
  <CardMedia
         component="img"
