@@ -214,19 +214,6 @@ const Prestamo = () => {
 
     }
 
-    
-
-
-
-
-
-    
-
-
-  
-
-
-
 
   return (
 

@@ -17,35 +17,21 @@ import axios from 'axios'
 
 function App() {
 
-
   const [login, setLogin] = useState(false)
   const [data, setData] = useState([])
   const [tipeUser, setTipeUser] = useState('')
 
-
-
-
-
   useEffect(() => {
     const datos = JSON.parse(sessionStorage.getItem('datos'))
     if (datos) {
-
-
       axios.get('https://sae.unimundial.edu.mx/ani/serviceLogin.php?accion=login2&usuario=' + datos.chrClave + '&password=' + datos.chrPassword)
         .then(function (response) {
           // handle success
-          console.log(response.data);
           setData(response.data)
           if (response.data.chrClave == datos.chrClave && response.data.chrPassword == datos.chrPassword) {
 
-            //checar que los dos arreglos sean iguales
-
             let array1 = Object.values(response.data)
             let array2 = Object.values(datos)
-
-            console.log(array1)
-            console.log(array2)
-
             //contar cuantos elementos son iguales
             let count = 0
             for (let i = 0; i < array1.length; i++) {
@@ -53,11 +39,9 @@ function App() {
                 count++
               }
             }
-
             //si los dos arreglos son iguales
             if (count == array1.length) {
               setLogin(true)
-
               if (response.data.bibliotecario == true) {
                 setTipeUser('bibliotecario')
               }
@@ -76,21 +60,9 @@ function App() {
               else {
                 setTipeUser('usuario')
               }
-
-              console.log(login)
-
             }
-
-
-
-
           } else {
-
             setLogin(false)
-
-            console.log(login)
-
-
           }
         })
     }
@@ -98,17 +70,11 @@ function App() {
     login
   ])
 
-
-
-
   return (
 
     <BrowserRouter>
-
       {login ? (
-
         <>
-          
           {tipeUser == 'bibliotecario' ? (
             <Routes>
             <Route path="/" element={<Home />} />
@@ -181,7 +147,6 @@ function App() {
             </Routes>
           )}
           
-          
         </>
       ) : (
         <Routes>
@@ -196,7 +161,6 @@ function App() {
         </Routes>
 
       )}
-
     </BrowserRouter>
 
   );

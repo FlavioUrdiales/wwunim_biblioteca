@@ -47,26 +47,19 @@ const getSolicitudes = async () => {
 
     let dataAlumno = JSON.parse(sessionStorage.getItem('datos'));
     let idAlumno = dataAlumno.chrClave;
-
     let _data = new FormData();
     _data.append('idAlumno', idAlumno);
-
-
     _data.append('admin', true);
 
     const res = await axios.post('http://sci.unimundial.edu.mx/modelos/serviciosLibreria.php?accion=consultarSolitudes' , _data)
 
     setSolicitudes(res.data)
 
-    console.log(res.data)
-
     }
 
     useEffect(() => {
         getSolicitudes()
-
     }, [])
-
 
     const QontoConnector = styled(StepConnector)(({ theme }) => ({
         [`&.${stepConnectorClasses.alternativeLabel}`]: {
@@ -329,12 +322,6 @@ const getSolicitudes = async () => {
         })
       }
 
-
-          
-   
-
-
-
   return (
     <>
     <Navbar />
@@ -402,20 +389,15 @@ const getSolicitudes = async () => {
                 </span>
             </Typography>
 
-       
-
-
                     <div className="row" style={{marginTop: '30px'}}>
 
                         <div className="col-12">
                         <Typography variant="subtitle1" color="text.secondary" component="div">
                         {solicitud.motivo}
                         </Typography>
-                     
                         </div>
                     </div>
-                    
-
+                  
        </CardContent>
          <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
               <Button variant="outlined"
@@ -426,9 +408,6 @@ const getSolicitudes = async () => {
                 color="error" size="small"
                 style={{marginLeft: '10px'}}
                 onClick={() => verRechazo(solicitud.id)}>Rechazar</Button>
-
-
-
                 </Box>
      
      </Box>
@@ -448,17 +427,7 @@ const getSolicitudes = async () => {
     </div>
     )}
   </div>
-
-
-
-            
-    
-
-
     </>
-
-
-
   )
 }
 
