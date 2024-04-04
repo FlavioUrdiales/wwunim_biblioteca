@@ -34,7 +34,9 @@ const getSolicitudes = async () => {
     _data.append('idAlumno', idAlumno);
     _data.append('admin', true);
 
-    const res = await axios.post('http://sci.unimundial.edu.mx/modelos/serviciosLibreria.php?accion=consultarSolitudes' , _data)
+  //  const res = await axios.post('http://sci.unimundial.edu.mx/modelos/serviciosLibreria.php?accion=consultarSolitudes' , _data)
+
+    const res = await axios.post('http://localhost/modelos/serviciosLibreria.php?accion=consultarSolitudes' , _data)
 
     setSolicitudes(res.data)
 
@@ -330,7 +332,7 @@ const getSolicitudes = async () => {
     </div>
     ) : (
       <div className="row">
-      <div className="col-12">
+     
         {solicitudes.map((solicitud) => (
           
 
@@ -390,6 +392,7 @@ const getSolicitudes = async () => {
                     
 
        </CardContent>
+       {solicitud.status === "Activo" ? (   
          <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
               <Button variant="outlined"
               color="secondary" size="small"
@@ -399,10 +402,16 @@ const getSolicitudes = async () => {
                 color="error" size="small"
                 style={{marginLeft: '10px'}}
                 onClick={() => verRechazo(solicitud.id)}>Rechazar</Button>
-
-
-
                 </Box>
+        ) : (
+          solicitud.status === "Prestado" & (
+            <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
+              <Button variant="outlined"
+              color="secondary" size="small"
+               onClick={() => verPrestamo(solicitud.id)}>Entregar</Button>
+                </Box>
+          ) 
+        )}
      
      </Box>
  
@@ -418,14 +427,8 @@ const getSolicitudes = async () => {
     </div>
         ))}
       </div>
-    </div>
     )}
   </div>
-
-
-
-            
-    
 
 
     </>
