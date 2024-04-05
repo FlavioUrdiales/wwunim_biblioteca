@@ -1,39 +1,15 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import { useState } from 'react'
-import Stack from '@mui/material/Stack'
-import Stepper from '@mui/material/Stepper'
-import Step from '@mui/material/Step'
-import StepLabel from '@mui/material/StepLabel'
-import Check from '@mui/icons-material/Check'
-import SettingsIcon from '@mui/icons-material/ManageSearch'
-import logo from '../assets/logo.png'
+import Stack from '@mui/material/Stack';
 import "./style.css"
-import Button from '@mui/material/Button';
-import Box from '@mui/material/Box';
-import ButtonGroup from '@mui/material/ButtonGroup';
-import BottomNavigation from '@mui/material/BottomNavigation';
-import BottomNavigationAction from '@mui/material/BottomNavigationAction';
-import FolderIcon from '@mui/icons-material/Folder';
-import RestoreIcon from '@mui/icons-material/MenuBook';
-
-import FavoriteIcon from '@mui/icons-material/Newspaper';
-import LocationOnIcon from '@mui/icons-material/Movie';
-import Badge from '@mui/material/Badge';
 import Chip from '@mui/material/Chip';
-import Paper from '@mui/material/Paper';
 import { PaginatedList } from 'react-paginated-list';
-
-import Pagination from '@mui/material/Pagination';
 import styled from 'styled-components';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import TextField from '@mui/material/TextField';
 import SearchIcon from '@mui/icons-material/Search';
 import InputAdornment from '@mui/material/InputAdornment';
-import Typography from '@mui/material/Typography';
-import Modal from '@mui/material/Modal';
-import { Icon } from '@mui/material'
 import axios from 'axios'
 import { useEffect } from 'react'
 
@@ -48,15 +24,10 @@ const Libros = () => {
 
 
 
- 
-
-
-
-
-    const [books, setBooks] = useState([])
+  const [books, setBooks] = useState([])
        
       const consultarlibros = async () => {
-        const res = await axios.get('http://sci.unimundial.edu.mx/modelos/serviciosLibreria.php?accion=consultarlibros ');
+        const res = await axios.get('http://sci.unimundial.edu.mx/modelos/serviciosLibreria.php?accion=consultarlibros');
         const data = await res.data;
         console.log(data);
         setBooks(data);
@@ -69,9 +40,6 @@ const Libros = () => {
       }, [])
 
 
-
-    
-    
       const handleSearch  = (e) => {
 
         if (e.target.value === '') {
@@ -121,12 +89,7 @@ const Libros = () => {
       ),
     }}
     />
-
-          
-
-
-    
-          </Stack>
+        </Stack>
           <br/>
 
     
@@ -190,11 +153,8 @@ const Libros = () => {
           background: transparent;
         }
        
-
-
-
-          
         `}
+
 
         nextText= {<NavigateNextIcon fontSize='small' />}
         prevText= {<NavigateBeforeIcon fontSize='small' />}
@@ -233,24 +193,11 @@ const Libros = () => {
                         <Stack direction="row" spacing={1}>
                           {book.ejemplares < 1 ? <Chip label="Prestado" color="error" variant='outlined' size="small"  /> : <Chip label="Disponible" color="success" variant='outlined' size="small"   /> }
           </Stack>
-
-
-
-      
-
-                  
-
-              
               </div>
               </div>
               </div>
-
-       
-
 
                 ) } ) } </div>
-                
-                
                 
                 ) } />
 

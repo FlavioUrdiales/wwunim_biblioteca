@@ -2,17 +2,16 @@ import { useState, useEffect } from 'react'
 import reactLogo from './assets/react.svg'
 import { Navbar } from './componets/Navbar'
 import { BrowserRouter, json, Route, Routes } from 'react-router-dom'
-import Steps from './componets/Steps'
 import ListBooks from './componets/Booklist'
 import Detalle from './componets/Detalle'
 import Login from './componets/login'
 import CrudLibro from './pages/CrudLibro'
 import Home from './pages/Home'
-import Error from './pages/NotFound'
 import Solicitudes from './pages/Solicitudes'
 import Prestamo from './componets/Prestamo'
 import Solicitudesadmin from './pages/Solicitudesadmin'
 import axios from 'axios'
+import Devolucion from './componets/Devolucion'
 
 
 function App() {
@@ -83,7 +82,7 @@ function App() {
             <Route path="/detail/:id" element={<Detalle />} />
             <Route path="/solicitudes" element={<Solicitudesadmin />} />
             <Route path="/prestamo/:id" element={<Prestamo />} />
-            <Route path="*" element={<Error />} />
+            <Route path="*" element={<Devolucion />} />
           </Routes>
           ) : tipeUser == 'bibliotecarioand' ? (
             <Routes>
@@ -93,7 +92,7 @@ function App() {
               <Route path="/detail/:id" element={<Detalle />} />
               <Route path="/solicitudes" element={<Solicitudes />} />
               <Route path="/prestamo/:id" element={<Prestamo />} />
-              <Route path="*" element={<Error />} />
+              <Route path="*" element={<Devolucion />} />
             </Routes>
           ) : tipeUser == 'bibliotecariojat' ? (
             <Routes>
@@ -103,7 +102,7 @@ function App() {
               <Route path="/detail/:id" element={<Detalle />} />
               <Route path="/solicitudes" element={<Solicitudes />} />
               <Route path="/prestamo/:id" element={<Prestamo />} />
-              <Route path="*" element={<Error />} />
+              <Route path="*" element={<Devolucion />} />
             </Routes>
           ) : tipeUser == 'bibliotecariosfr' ? (
             <Routes>
@@ -113,7 +112,7 @@ function App() {
               <Route path="/detail/:id" element={<Detalle />} />
               <Route path="/solicitudes" element={<Solicitudes />} />
               <Route path="/prestamo/:id" element={<Prestamo />} />
-              <Route path="*" element={<Error />} />
+              <Route path="*" element={<Devolucion />} />
             </Routes>
           ) : tipeUser == 'bibliotecariosil' ? (
             <Routes>
@@ -123,7 +122,7 @@ function App() {
               <Route path="/detail/:id" element={<Detalle />} />
               <Route path="/solicitudes" element={<Solicitudes />} />
               <Route path="/prestamo/:id" element={<Prestamo />} />
-              <Route path="*" element={<Error />} />
+              <Route path="*" element={<Devolucion />} />
             </Routes>
           ) : tipeUser == 'usuario' ? (
             <Routes>
@@ -133,7 +132,7 @@ function App() {
               <Route path="/detail/:id" element={<Detalle />} />
               <Route path="/solicitudes" element={<Solicitudes />} />
               <Route path="/prestamo/:id" element={<Prestamo />} />
-              <Route path="*" element={<Error />} />
+              <Route path="*" element={<Devolucion />} />
             </Routes>
           ) : (
             <Routes>
@@ -143,7 +142,7 @@ function App() {
               <Route path="/detail/:id" element={<Detalle />} />
               <Route path="/solicitudes" element={<Solicitudes />} />
               <Route path="/prestamo/:id" element={<Prestamo />} />
-              <Route path="*" element={<Error />} />
+              <Route path="*" element={<Devolucion />} />
             </Routes>
           )}
           
@@ -157,7 +156,7 @@ function App() {
           <Route path="/solicitudes" element={<Login />} />
           <Route path="/prestamo/:id" element={<Login />} />
 
-          <Route path="*" element={<Error />} />
+          <Route path="*" element={<Devolucion />} />
         </Routes>
 
       )}

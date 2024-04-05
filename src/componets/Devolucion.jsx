@@ -3,9 +3,6 @@ import React from 'react'
 import { useEffect , useState } from 'react'
 import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
-import Stepper from '@mui/material/Stepper';
-import Step from '@mui/material/Step';
-import StepLabel from '@mui/material/StepLabel';
 import Check from '@mui/icons-material/Check';
 import SettingsIcon from '@mui/icons-material/ManageSearch';
 import GroupAddIcon from '@mui/icons-material/Grading';
@@ -15,34 +12,38 @@ import Navbar from '../componets/Navbarv2';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia'
+import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { Button } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import Swal from 'sweetalert2';
 
-const Solicitudes = () => {
-
+const Devolucion = () => {
 
     const theme = useTheme();
 
-const [solicitudes, setSolicitudes] = useState([])
+const [devoluciones, setDevolucion] = useState([])
 
 
-const getSolicitudes = async () => {
+const getDevolucion = async () => {
 
     let dataAlumno = JSON.parse(sessionStorage.getItem('datos'));
     let idAlumno = dataAlumno.chrClave;
 
     let _data = new FormData();
     _data.append('idAlumno', idAlumno);
+    _data.append('admin', true);
 
-    const res = await axios.post('http://sci.unimundial.edu.mx/modelos/serviciosLibreria.php?accion=consultarMisSolitudes' , _data)
-    setSolicitudes(res.data)
+    const res = await axios.post('http://sci.unimundial.edu.mx/modelos/serviciosLibreria.php?accion=consultarSolitudes' , _data)
+
+    setDevoluciones(res.data)
+
+    console.log(res.data)
+
     }
 
     useEffect(() => {
-        getSolicitudes()
+        getDevolucion()
 
     }, [])
 
@@ -198,57 +199,6 @@ const getSolicitudes = async () => {
          */
         icon: PropTypes.node,
       };
-      
-      const steps = ['Solicitalo', 'Recolectalo antes de 72h', 'Entregalo antes de 72h'];
-
-      const verPrestamo = (id) => {
-        
-        let _data = new FormData();
-        _data.append('idSolicitud', id);
-
-        let res_1 = axios.post(`http://sci.unimundial.edu.mx/modelos/serviciosLibreria.php?accion=getSolicitud`, _data)
-        .then((res1) => {
-
-          let res_2 = axios.post(`http://sci.unimundial.edu.mx/modelos/serviciosLibreria.php?accion=getPrestamo`, _data)
-          .then((res2) => {
-            console.log(res2.data);
-  
-            if(res2.data.length == 0){
-              
-              if(res1.data[0].status != "Activo"){
-
-              Swal.fire({
-                icon: 'error',
-                html: '<h3>La solicitud ya fue cancelada</h3> <br /> <p>Recuerda que solo tenias 72 horas para recolectar el libro</p>',
-                showConfirmButton: true,
-                confirmButtonText: 'Aceptar',
-                confirmButtonColor: '#784af4'
-              })
-
-              }else {
-                Swal.fire({
-                  icon: 'info',
-                  html: '<h3>Aun no has recolectado el libro</h3> <br /> <p>Recuerda que tienes 72 horas para recolectar el libro</p>',
-                  showConfirmButton: true,
-                  confirmButtonText: 'Aceptar',
-                  confirmButtonColor: '#784af4'
-                })
-
-              }
-  
-            } else{
-              window.location.href = `/prestamo/${id}`;
-            }
-            
-          })
-          
-          .catch((err) => {
-            console.log(err);
-          }
-          )
-       
-        })        
-      }
 
   return (
     <>
@@ -257,20 +207,29 @@ const getSolicitudes = async () => {
   <div className="container">
     <div className="row">
         <div className="col-12">
-            <h1 className="text-center" style={{color: 'purple'}}>MIS SOLICITUDES</h1>
+            <h1 className="text-center" style={{color: 'purple'}}>Devoluciones</h1>
         </div>
-    </div> 
-    <div className="row">
-    {solicitudes.length < 1 ? (
-      <div className="col-12">
+    </div>
+    
+    {devoluciones.length < 1 ? (
+
+
+          <div className="row">
+         <div className="col-12">
+
+
+
 
         <br />
-        <h3 className="text-center" style={{color: 'purple'}}>No tienes solicitudes</h3>
+        <h3 className="text-center" style={{color: 'purple'}}>No tienes devoluciones pero eres admin</h3>
       </div>
+    </div>
     ) : (
-        <div className="row">
-        {solicitudes.map((solicitud) => (
+      <div className="row">
+      <div className="col-12">
+        {devoluciones.map((devolucion) => (
           
+
             <div className="col-12 col-md-6 col-lg-4">
                   <br /> 
             <br />
@@ -278,21 +237,29 @@ const getSolicitudes = async () => {
      <Box sx={{ display: 'flex', flexDirection: 'column' }}>
        <CardContent sx={{ flex: '1 0 auto' }}>
          <Typography component="div" variant="h6">
-           {solicitud.titulo}
+           {devolucion.titulo}
          </Typography>
             <Typography variant="subtitle1" color="text.secondary" component="div">
-              {solicitud.fechaSolicitud}
+              {devolucion.nombreAlumno}
+              
 
             </Typography>
             <Typography variant="subtitle1" color="text.secondary" component="div">
-                {solicitud.status === "Activo" ? (
+              {devolucion.fechaSolicitud}
+              
+
+            </Typography>
+            <Typography variant="subtitle1" color="text.secondary" component="div">
+                {devolucion.status === "Activo" ? (
                     <span className="badge bg-success">{solicitud.status}</span>
+
+                    
                 ) : (
-                  solicitud.status === "Prestado" ? (
+                    devolucion.status === "Prestado" ? (
 
                     <span className="badge bg-success">Recogido</span>
                   ) : (
-                    <span className="badge bg-danger">{solicitud.status}</span>
+                    <span className="badge bg-danger">{devolucion.status}</span>
                   
                   )
 
@@ -300,52 +267,57 @@ const getSolicitudes = async () => {
 
                 <span   style={{marginLeft: '10px', color: 'white', backgroundColor: 'purple',
                  borderRadius: '5px', padding: '3px', fontSize: '12px', fontWeight: 'bold'}}>
-                    ANDRADE</span>
+                    {devolucion.biblioteca}
+                </span>
             </Typography>
 
-            <Typography variant="subtitle1" color="text.secondary" component="div">
-      
-            </Typography>
+       
+
+
                     <div className="row" style={{marginTop: '30px'}}>
+
                         <div className="col-12">
-                        <Stepper alternativeLabel activeStep={solicitud.paso} connector={<ColorlibConnector />}>
-                            {steps.map((label) => (
-                            <Step key={label}>
-                                <StepLabel StepIconComponent={ColorlibStepIcon}>{label}</StepLabel>
-                            </Step>
-                            ))}
-                        </Stepper>
+                        <Typography variant="subtitle1" color="text.secondary" component="div">
+                        {devolucion.motivo}
+                        </Typography>
+                     
                         </div>
                     </div>
+                    
+
        </CardContent>
          <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
               <Button variant="outlined"
               color="secondary" size="small"
-               onClick={() => verPrestamo(solicitud.id)}>Ver</Button>
+               onClick={() => verPrestamo(solicitud.id)}>Aceptar</Button>
 
                <Button variant="outlined" 
                 color="error" size="small"
                 style={{marginLeft: '10px'}}
-                onClick={() => handleDelete(solicitud.id)}>Cancelar</Button>
+                onClick={() => verRechazo(solicitud.id)}>Rechazar</Button>
+
+
+
                 </Box>
      
      </Box>
  
+
  <CardMedia
         component="img"
         sx={{ width: 151 }}
-        image={solicitud.img}
+        image={devolucion.img}
         alt="Live from space album cover"
       />
    </Card>
    
-            </div>
+    </div>
         ))}
       </div>
-    
-    )}
     </div>
+    )}
   </div>
+
     </>
 
 
@@ -353,4 +325,4 @@ const getSolicitudes = async () => {
   )
 }
 
-export default Solicitudes
+export default Devolucion 
