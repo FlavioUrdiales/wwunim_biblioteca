@@ -146,40 +146,40 @@ export const Navbar = () => {
       </Modal>
 
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark nav2" style={{ backgroundImage: "linear-gradient(to right, #21012b, #21012b, #21012b)" }}>
-        <div class="container-fluid" >
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+        <div className="container-fluid" >
+          <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+            <span className="navbar-toggler-icon"></span>
           </button>
-          <a class="navbar-brand" href="#"><img src={logo3} alt="logo" style={{ width: "100px", height: "100px" }} /></a>
-          <div class="collapse navbar-collapse" id="navbarTogglerDemo03" >
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <a className="navbar-brand" href="#"><img src={logo3} alt="logo" style={{ width: "100px", height: "100px" }} /></a>
+          <div className="collapse navbar-collapse" id="navbarTogglerDemo03" >
+            <ul className="navbar-nav me-auto mb-2 mb-lg-0">
 
 
 
-              <li class="nav-item">
-                <Link class="nav-link active" aria-current="page" to="/"><b id='home'>Inicio</b></Link>
+              <li className="nav-item">
+                <Link className="nav-link active" aria-current="page" to="/"><b id='home'>Inicio</b></Link>
                 <hr style={{ color: "white", background: "white", height: "5px", marginLeft: "0px", marginTop: "0px", marginBottom: "0px", marginRight: "0px", width: "100%" }} />
 
 
 
 
               </li>
-              <li class="nav-item">
-                <Link class="nav-link" to="/solicitudes">Prestamos</Link>
+              <li className="nav-item">
+                <Link className="nav-link" to="/solicitudes">Prestamos</Link>
 
               </li>
 
 
               {datosSesion.chrTipoUsuario == "usuario" && (
-        <li class="nav-item" style={{marginLeft: "10 px"}}>
-          <Link class="nav-link" to="/Devolucion">Devoluciones</Link>
+        <li className="nav-item" style={{marginLeft: "10 px"}}>
+          <Link className="nav-link" to="/Devolucion">Devoluciones</Link>
         </li>
         ) }
 
             </ul>
 
 
-            <div class="dropdown d-flex" style={{ marginRight: "50px" }} onMouseEnter={handleClick} onMouseLeave={handleClose}>
+            <div className="dropdown d-flex" style={{ marginRight: "50px" }} onMouseEnter={handleClick} onMouseLeave={handleClose}>
               <span >
                 <AccountCircleIcon style={{ color: "white", fontSize: "40px" }} onClick={handleClick} />
               </span>

@@ -33,7 +33,6 @@ axios.get('http://sci.unimundial.edu.mx/modelos/serviciosLibreria.php', {
 })
 .then(function (response) {
     // handle success
-    console.log(response.data);
     setData(response.data)
     
 })
@@ -46,12 +45,6 @@ axios.get('http://sci.unimundial.edu.mx/modelos/serviciosLibreria.php', {
 });
 
     }, [])
-
-
-
-
-
-
 
     const consultarRecomendaciones = () => {
         

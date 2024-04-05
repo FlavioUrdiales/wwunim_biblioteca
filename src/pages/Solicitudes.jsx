@@ -37,15 +37,8 @@ const getSolicitudes = async () => {
     let _data = new FormData();
     _data.append('idAlumno', idAlumno);
 
-
-
-
     const res = await axios.post('http://sci.unimundial.edu.mx/modelos/serviciosLibreria.php?accion=consultarMisSolitudes' , _data)
-
     setSolicitudes(res.data)
-
-    console.log(res.data)
-
     }
 
     useEffect(() => {
@@ -207,20 +200,14 @@ const getSolicitudes = async () => {
       };
       
       const steps = ['Solicitalo', 'Recolectalo antes de 72h', 'Entregalo antes de 72h'];
-      
-
 
       const verPrestamo = (id) => {
-        
-        console.log(id);
-
         
         let _data = new FormData();
         _data.append('idSolicitud', id);
 
         let res_1 = axios.post(`http://sci.unimundial.edu.mx/modelos/serviciosLibreria.php?accion=getSolicitud`, _data)
         .then((res1) => {
-
 
           let res_2 = axios.post(`http://sci.unimundial.edu.mx/modelos/serviciosLibreria.php?accion=getPrestamo`, _data)
           .then((res2) => {
@@ -230,7 +217,6 @@ const getSolicitudes = async () => {
               
               if(res1.data[0].status != "Activo"){
 
-                
               Swal.fire({
                 icon: 'error',
                 html: '<h3>La solicitud ya fue cancelada</h3> <br /> <p>Recuerda que solo tenias 72 horas para recolectar el libro</p>',
@@ -239,9 +225,7 @@ const getSolicitudes = async () => {
                 confirmButtonColor: '#784af4'
               })
 
-
               }else {
-
                 Swal.fire({
                   icon: 'info',
                   html: '<h3>Aun no has recolectado el libro</h3> <br /> <p>Recuerda que tienes 72 horas para recolectar el libro</p>',
@@ -253,10 +237,7 @@ const getSolicitudes = async () => {
               }
   
             } else{
-
               window.location.href = `/prestamo/${id}`;
-
-
             }
             
           })
@@ -290,7 +271,6 @@ const getSolicitudes = async () => {
         <div className="row">
         {solicitudes.map((solicitud) => (
           
-
             <div className="col-12 col-md-6 col-lg-4">
                   <br /> 
             <br />
@@ -307,8 +287,6 @@ const getSolicitudes = async () => {
             <Typography variant="subtitle1" color="text.secondary" component="div">
                 {solicitud.status === "Activo" ? (
                     <span className="badge bg-success">{solicitud.status}</span>
-
-                    
                 ) : (
                   solicitud.status === "Prestado" ? (
 
@@ -328,12 +306,8 @@ const getSolicitudes = async () => {
             <Typography variant="subtitle1" color="text.secondary" component="div">
       
             </Typography>
-
-
                     <div className="row" style={{marginTop: '30px'}}>
-
                         <div className="col-12">
-                            
                         <Stepper alternativeLabel activeStep={solicitud.paso} connector={<ColorlibConnector />}>
                             {steps.map((label) => (
                             <Step key={label}>
@@ -343,8 +317,6 @@ const getSolicitudes = async () => {
                         </Stepper>
                         </div>
                     </div>
-                    
-
        </CardContent>
          <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
               <Button variant="outlined"
@@ -355,14 +327,10 @@ const getSolicitudes = async () => {
                 color="error" size="small"
                 style={{marginLeft: '10px'}}
                 onClick={() => handleDelete(solicitud.id)}>Cancelar</Button>
-
-
-
                 </Box>
      
      </Box>
  
-         
  <CardMedia
         component="img"
         sx={{ width: 151 }}

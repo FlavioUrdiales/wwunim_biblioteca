@@ -27,10 +27,10 @@ const Libros = () => {
   const [books, setBooks] = useState([])
        
       const consultarlibros = async () => {
-        const res = await axios.get('http://sci.unimundial.edu.mx/modelos/serviciosLibreria.php?accion=consultarlibros');
+        const res = await axios.get('http://sci.unimundial.edu.mx/modelos/serviciosLibreria.php?accion=consultarlibros') 
         const data = await res.data;
-        console.log(data);
-        setBooks(data);
+        let dataFinal = data.length > 0 ? data : []
+        setBooks(dataFinal);
     
      }
 
@@ -40,20 +40,17 @@ const Libros = () => {
       }, [])
 
 
-      const handleSearch  = (e) => {
-
-        if (e.target.value === '') {
-          consultarlibros()
+      const handleSearch = (e) => {
+        const query = e.target.value.toLowerCase();
+        setSearch(query);
+    
+        if (query === '') {
+            consultarlibros();
+        } else {
+            const results = detail.filter(book => book.titulo.toLowerCase().includes(query));
+            setBooks(results);
         }
-      
-    
-        setSearch(e.target.value)
-    
-        //hace la busqueda en el arreglo de libros
-        const results = books.filter(book => book.titulo.toLowerCase().includes(search.toLowerCase()))
-        setBooks(results)
-    
-      }
+    }
 
 
       const handleDetail = (id) => {
