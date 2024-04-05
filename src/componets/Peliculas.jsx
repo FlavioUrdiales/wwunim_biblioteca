@@ -27,7 +27,7 @@ const Peliculas = () => {
     const [peliculas, setPeliculas] = useState([])
        
       const consultarPeliculas = async () => {
-        const res = await axios.get('http://sci.unimundial.edu.mx/modelos/serviciosLibreria.php?accion=consultarPeliculas ');
+        const res = await axios.get('http://localhost/modelos/serviciosLibreria.php?accion=consultarPeliculas ');
         const data = await res.data;
         console.log(data);
         setPeliculas(data);
