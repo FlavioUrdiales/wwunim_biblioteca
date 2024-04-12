@@ -41,7 +41,7 @@ const Prestamo = () => {
     const consultarlibros = async () => {
         let _data = new FormData();
         _data.append('idSolicitud', id);
-        const res = await axios.post('http://sci.unimundial.edu.mx/modelos/serviciosLibreria.php?accion=getPrestamo ', _data);
+        const res = await axios.post('http://localhost/modelos/serviciosLibreria.php?accion=getPrestamo ', _data);
 
         
         setData(res.data[0])
@@ -54,7 +54,7 @@ const Prestamo = () => {
     }, [])
     const consultarRecomendaciones = () => {
         
-        const res = axios.get('http://sci.unimundial.edu.mx/modelos/serviciosLibreria.php', {
+        const res = axios.get('http://localhost/modelos/serviciosLibreria.php', {
 
             params: {
                 accion: 'librosRelacionados',
@@ -126,7 +126,7 @@ const Prestamo = () => {
 
         Swal.fire({
             title: '<h3 class="text-purple "><i class="fas fa-money-check-alt"></i> PAGAR ADEUDO DE LIBRO</h3> ',
-            html: '<b class="text-purple"> Pase a servicios escolares del plantel mas cercano y pague la cantidad de $' +moment(data.fechaPrestamo).add(3, 'days').diff(moment(), 'days') * -100 + ' </b><br/> <br/> <br/>  <div class="col-12  order-1 order-md-2"><p class="text-muted  text-justify">Si tienes dudas y tu pago no se ve reflejado es muy importante tener tu comprobante de pago a la mano para cualquier duda contacte a <b> <a href="mailto:sistemas.leon@unimundial.edu.mx ">sistemas.leon@unimundial.edu.mx </a>',
+            html: '<b class="text-purple"> Pase a servicios escolares del plantel mas cercano y pague la cantidad de $' + getPricesAdeudo()+ ' </b><br/> <br/> <br/>  <div class="col-12  order-1 order-md-2"><p class="text-muted  text-justify">Si tienes dudas y tu pago no se ve reflejado es muy importante tener tu comprobante de pago a la mano para cualquier duda contacte a <b> <a href="mailto:sistemas.leon@unimundial.edu.mx ">sistemas.leon@unimundial.edu.mx </a>',
             showDenyButton: false,
             showConfirmButton: true,
             showCancelButton: false,
@@ -214,7 +214,58 @@ const Prestamo = () => {
 
     }
 
+    const getPricesAdeudo = () => { 
     
+       // let data = solicitudes.find(solicitud => solicitud.id === idSolicitud)
+       //fecha fincticia del dia 01/05/2024
+      // let pruebaFecha  = new Date('2024-04-01')
+        //let fechaPrestamo = new Date(pruebaFecha)
+       let fechaPrestamo = new Date(data.fechaPrestamo)
+        let fechaActual = new Date()
+        let diff = fechaActual - fechaPrestamo
+        // //descontar los dias sabados y domingos que hayan pasado
+        let totalDias = 0;
+        for (let i = 0; i < diff; i += 86400000) {
+          let fecha = new Date(fechaPrestamo.getTime() + i)
+          if (fecha.getDay() !== 0 && fecha.getDay() !== 6) {
+            totalDias++
+          }
+        }
+    
+        let precio = 100
+        let total = 0
+        if (totalDias > 3) {
+          total = (totalDias - 3) * precio
+        }
+    
+        total = total.toFixed(2)
+    
+        return total
+      
+      }
+
+   
+        const calcularFechaDevolucion = () => {
+            let pruebaFecha  = new Date('2024-04-01')
+            let fechaPrestamo = new Date(data.fechaPrestamo)
+            let dias = 3
+            let fecha = fechaPrestamo
+            for (let i = 0; i < dias; i++) {
+              fecha = new Date(fecha.getTime() + 86400000)
+              if (fecha.getDay() === 0 || fecha.getDay() === 6) {
+                dias++
+              }
+            }
+            //dar formato a la fecha 
+            //recibido Tue Apr 09 2024 18:00:00 GMT-0600 (GMT-06:00)
+            //transformar a : yyyy-mm-dd
+          
+            //con :
+            return moment(fecha).format('YYYY-MM-DD')
+
+      
+        }
+
   return (
 
     <>
@@ -245,10 +296,9 @@ const Prestamo = () => {
                 <br/>
                 <i>Estado: {data.status}</i>
                 <br/>
-                {data.status != 'vencido' && data.status == 'Activo' ?  <i>Recuerda que solo tienes hasta el {moment(data.fechaPrestamo).add(3, 'days').format('YYYY-MM-DD') } para entregar el libro sin que se te cobre una multa de $100 Mxn por dia de retraso</i> :
-                data.status == 'vencido' ? <i>Se te cobrara una multa de $100 Mxn por dia de retraso</i>
-                : <i>Fecha de entrega: {data.fechaPrestamo}</i>  }
-
+                {data.status == 'Activo' ?  <i>Recuerda que solo tienes hasta el {calcularFechaDevolucion() } para entregar el libro sin que se te cobre una multa de $100 Mxn por dia de retraso</i> :
+                data.status == 'vencido' && <i>Se te cobrara una multa de $100 Mxn por dia de retraso</i>}
+                {data.status == 'Devuelto' && <i>Se te agradece tu dedicacion</i>}
 </center>
 
          </div>
@@ -277,7 +327,7 @@ const Prestamo = () => {
                     <TimelineItem>
                         <TimelineOppositeContent>
                             <Typography variant="body2" color="white">
-                            {moment(data.fechaPrestamo).add(3, 'days').format('YYYY-MM-DD') }
+                            {calcularFechaDevolucion() }
                             </Typography>
                         </TimelineOppositeContent>
                         <TimelineSeparator>
@@ -356,14 +406,14 @@ const Prestamo = () => {
                         <br/>
                         <br/>
 
-                         <b>Multa: {data.fechaPrestamo ?  moment(data.fechaPrestamo).add(3, 'days').diff(moment(), 'days') * -100 : 0} Mxn</b>
+                         <b>Multa: {getPricesAdeudo()} Mxn</b>
 
                          <br/>                         <br/>
                          <br/>
 
                          <Button variant="outlined" color="secondary" onClick={() => {pagar(data.id)}}>Pagar Multa</Button>
                     </div>
-                    : data.status == 'entregado' ?
+                    : data.status == 'Devuelto' ?
                     <div>
                         <i className="fas fa-check-circle" style={{color: 'green', fontSize: '15px'}}>  </i>  <b>Libro Entregado</b>
                         <br/>
@@ -372,7 +422,6 @@ const Prestamo = () => {
                     : <div>
                         <i className="fas fa-times-circle" style={{color: 'red', fontSize: '15px'}}>  </i>  <b>Libro Sin Entregar</b>
                         <br/>
-                         <b>Multa: $0 Mxn</b>
                     </div>
 
                 }

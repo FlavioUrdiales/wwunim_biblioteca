@@ -20,13 +20,27 @@ import Typography from '@mui/material/Typography';
 import { Button } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import Swal from 'sweetalert2';
+import { PaginatedList } from 'react-paginated-list';
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
+import TextField from '@mui/material/TextField';
+import SearchIcon from '@mui/icons-material/Search';
+import InputAdornment from '@mui/material/InputAdornment';
+import Stack from '@mui/material/Stack';
 
 const Solicitudes = () => {
 
 
-    const theme = useTheme();
-
+const theme = useTheme();
 const [solicitudes, setSolicitudes] = useState([])
+const [search, setSearch] = useState('')
+const [currentPage, setCurrentPage] = useState(1); // Página actual
+const [itemsPerPage] = useState(9); // Cantidad de elementos por página
+  // Calcular índices de los elementos a mostrar en la página actual
+const indexOfLastItem = currentPage * itemsPerPage;
+const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+const currentItems = solicitudes.slice(indexOfFirstItem, indexOfLastItem);
+const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
 
 const getSolicitudes = async () => {
@@ -37,7 +51,7 @@ const getSolicitudes = async () => {
     let _data = new FormData();
     _data.append('idAlumno', idAlumno);
 
-    const res = await axios.post('http://sci.unimundial.edu.mx/modelos/serviciosLibreria.php?accion=consultarMisSolitudes' , _data)
+    const res = await axios.post('http://localhost/modelos/serviciosLibreria.php?accion=consultarMisSolitudes' , _data)
     setSolicitudes(res.data)
     }
 
@@ -206,10 +220,10 @@ const getSolicitudes = async () => {
         let _data = new FormData();
         _data.append('idSolicitud', id);
 
-        let res_1 = axios.post(`http://sci.unimundial.edu.mx/modelos/serviciosLibreria.php?accion=getSolicitud`, _data)
+        let res_1 = axios.post(`http://localhost/modelos/serviciosLibreria.php?accion=getSolicitud`, _data)
         .then((res1) => {
 
-          let res_2 = axios.post(`http://sci.unimundial.edu.mx/modelos/serviciosLibreria.php?accion=getPrestamo`, _data)
+          let res_2 = axios.post(`http://localhost/modelos/serviciosLibreria.php?accion=getPrestamo`, _data)
           .then((res2) => {
             console.log(res2.data);
   
@@ -250,6 +264,65 @@ const getSolicitudes = async () => {
         })        
       }
 
+      const cancelar = async (id) => {
+
+        let _data = new FormData();
+    
+        _data.append('idSolicitud', id);
+        //mostrar swal para que confirmen el rechazo y de un motivo de rechazo
+        Swal.fire({
+          title: "¿Estas seguro de cancelar la solicitud?",
+          text: "Escribe el motivo de la cancelacion",
+          icon: "warning",
+          input: 'text',
+          inputAttributes: {
+            autocapitalize: 'off'
+          },
+          showCancelButton: true,
+          confirmButtonText: 'Cancelar',
+          showLoaderOnConfirm: true,
+          preConfirm: (login) => {
+            _data.append('motivoRechazo', login);
+            return axios.post(`http://localhost/modelos/serviciosLibreria.php?accion=cancelarSolicitud`, _data)
+              .then((res) => {
+                if (res.data.response == true) {
+                  Swal.fire({
+                    title: "Solicitud Cancelada",
+                    html: res.data.mensaje,
+                    icon: "success",
+                    button: "Aceptar",
+                  }).then(() => {
+                    getSolicitudes();
+                  });
+                } else {
+                  Swal.fire({
+                    title: "Error",
+                    text: res.data.mensaje,
+                    icon: "error",
+                    button: "Aceptar",
+                  });
+                }
+              })
+              .catch((error) => {
+                console.log(error);
+              });
+          },
+          allowOutsideClick: () => !Swal.isLoading()
+        })
+      }
+////pagination y busqueda
+const handleSearch = (e) => {
+  const query = e.target.value.toLowerCase();
+  setSearch(query);
+
+  if (query === '') {
+    getSolicitudes();
+  } else {
+    const results = solicitudes.filter(solicitud => solicitud.titulo.toLowerCase().includes(query) || solicitud.status.toLowerCase().includes(query));
+    setSolicitudes(results);
+  }
+}
+
   return (
     <>
     <Navbar />
@@ -260,6 +333,21 @@ const getSolicitudes = async () => {
             <h1 className="text-center" style={{color: 'purple'}}>MIS SOLICITUDES</h1>
         </div>
     </div> 
+    <Stack spacing={2} direction="row" justifyContent="center" alignItems="center" >
+
+<TextField label="Buscar" variant="outlined" sx={{ width: '50%' }} color="secondary" id="search" onChange={handleSearch} value={search}
+  InputProps={{
+    endAdornment: (
+      <InputAdornment position="start">
+
+        <SearchIcon color="secondary" />
+
+      </InputAdornment>
+    ),
+  }}
+/>
+</Stack>
+<br />
     <div className="row">
     {solicitudes.length < 1 ? (
       <div className="col-12">
@@ -268,8 +356,16 @@ const getSolicitudes = async () => {
         <h3 className="text-center" style={{color: 'purple'}}>No tienes solicitudes</h3>
       </div>
     ) : (
+      <PaginatedList
+      list={solicitudes}
+      itemsPerPage={itemsPerPage}
+
+      nextText={<NavigateNextIcon fontSize='small' />}
+      prevText={<NavigateBeforeIcon fontSize='small' />}
+
+      renderList={(list) => (
         <div className="row">
-        {solicitudes.map((solicitud) => (
+        {list.map((solicitud) => (
           
             <div className="col-12 col-md-6 col-lg-4">
                   <br /> 
@@ -289,8 +385,15 @@ const getSolicitudes = async () => {
                     <span className="badge bg-success">{solicitud.status}</span>
                 ) : (
                   solicitud.status === "Prestado" ? (
-
-                    <span className="badge bg-success">Recogido</span>
+                    <>
+                    {solicitud.prestamoEstado === "Devuelto" ? (
+                    <span className="badge bg-success">Entregado</span>
+                    ) : solicitud.prestamoEstado === "Activo" ? (
+                      <span className="badge bg-warning">Prestado</span>
+                    ) : (
+                      <span className="badge bg-danger">{solicitud.prestamoEstado}</span>
+                    )}
+                    </>
                   ) : (
                     <span className="badge bg-danger">{solicitud.status}</span>
                   
@@ -322,12 +425,14 @@ const getSolicitudes = async () => {
               <Button variant="outlined"
               color="secondary" size="small"
                onClick={() => verPrestamo(solicitud.id)}>Ver</Button>
-
+              {solicitud.status === "Activo" && (
                <Button variant="outlined" 
                 color="error" size="small"
                 style={{marginLeft: '10px'}}
-                onClick={() => handleDelete(solicitud.id)}>Cancelar</Button>
+                onClick={() => cancelar(solicitud.id)}>Cancelar</Button>
+              )}
                 </Box>
+             
      
      </Box>
  
@@ -342,6 +447,10 @@ const getSolicitudes = async () => {
             </div>
         ))}
       </div>
+      ///
+    )} />
+
+
     
     )}
     </div>
