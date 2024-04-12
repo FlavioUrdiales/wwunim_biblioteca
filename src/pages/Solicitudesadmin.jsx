@@ -216,7 +216,7 @@ const Solicitudesadmin = () => {
   const verPrestamo = (id) => {
     let _data = new FormData();
     _data.append('idSolictud', id);
-    return axios.post(`http://sci.unimundial.edu.mx/modelos/serviciosLibreria.php?accion=prestarLibro`, _data)
+    return axios.post(`http://localhost/modelos/serviciosLibreria.php?accion=prestarLibro`, _data)
       .then((res1) => {
         //si response es true entonces se actualiza el estado de la solicitud muestra un swal y se redirecciona a la pagina de prestamos
         if (res1.data.response == true) {
@@ -273,7 +273,7 @@ const Solicitudesadmin = () => {
       showLoaderOnConfirm: true,
       preConfirm: (login) => {
         _data.append('motivoRechazo', login);
-        return axios.post(`http://sci.unimundial.edu.mx/modelos/serviciosLibreria.php?accion=cancelarSolicitud`, _data)
+        return axios.post(`http://localhost/modelos/serviciosLibreria.php?accion=cancelarSolicitud`, _data)
           .then((res) => {
             if (res.data.response == true) {
               Swal.fire({
