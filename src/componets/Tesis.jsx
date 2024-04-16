@@ -27,7 +27,7 @@ const Tesis = () => {
     const [tesis, setTesis] = useState([])
        
       const consultartesis = async () => {
-        const res = await axios.get('http://sci.unimundial.edu.mx/modelos/serviciosLibreria.php?accion=consultartesi');
+        const res = await axios.get('http://localhost/modelos/serviciosLibreria.php?accion=consultartesi');
         const data = await res.data;
         console.log(data);
         setTesis(data);

@@ -41,8 +41,16 @@ export const Navbar = () => {
 
   const [open, setOpen] = React.useState(false);
 
+  const [url, setUrl] = React.useState('');
+
  useEffect(() => {
     const datos = sessionStorage.getItem('datos');
+    //obtener url
+    let url = window.location.href;
+    //solo agarrar la ultima parte de la url
+    url = url.split('/').pop();
+    setUrl(url);
+
     let data = JSON.parse(datos)
     if (datos) {
       setDatosSesion(JSON.parse(datos));
@@ -185,22 +193,22 @@ export const Navbar = () => {
 
         <li class="nav-item">
           <Link class="nav-link active" aria-current="page" to="/"><b id='home'>Inicio</b></Link>
+          {url === '' &&
           <hr style={{color: "white" ,background: "white",  height: "5px", marginLeft: "0px", marginTop: "0px", marginBottom: "0px", marginRight: "0px" , width: "100%"}}/>
-
+          }
      
     
 
         </li>
         <li class="nav-item">
             <Link class="nav-link" to="/solicitudes">Prestamos</Link>
+            {url === 'solicitudes' &&
+          <hr style={{color: "white" ,background: "white",  height: "5px", marginLeft: "0px", marginTop: "0px", marginBottom: "0px", marginRight: "0px" , width: "100%"}}/>
+          }
           
         </li>
 
-        {datosSesion.chrTipoUsuario == "usuario" && (
-        <li class="nav-item" style={{marginLeft: "10 px"}}>
-          <Link class="nav-link" to="/Devolucion">Devoluciones</Link>
-        </li>
-        ) }
+       
 
       </ul>      
 

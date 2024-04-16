@@ -24,7 +24,7 @@ const Detalle = () => {
         
 
 
-axios.get('http://sci.unimundial.edu.mx/modelos/serviciosLibreria.php', {
+axios.get('http://localhost/modelos/serviciosLibreria.php', {
     
     params: {
         accion: 'consultarlibro',
@@ -33,7 +33,6 @@ axios.get('http://sci.unimundial.edu.mx/modelos/serviciosLibreria.php', {
 })
 .then(function (response) {
     // handle success
-    console.log(response.data);
     setData(response.data)
     
 })
@@ -47,15 +46,9 @@ axios.get('http://sci.unimundial.edu.mx/modelos/serviciosLibreria.php', {
 
     }, [])
 
-
-
-
-
-
-
     const consultarRecomendaciones = () => {
         
-        const res = axios.get('http://sci.unimundial.edu.mx/modelos/serviciosLibreria.php', {
+        const res = axios.get('http://localhost/modelos/serviciosLibreria.php', {
 
             params: {
                 accion: 'librosRelacionados',
@@ -99,7 +92,7 @@ axios.get('http://sci.unimundial.edu.mx/modelos/serviciosLibreria.php', {
 
 
     const consultarDisponibilidad = () => {
-        axios.get('http://sci.unimundial.edu.mx/modelos/serviciosLibreria.php', {
+        axios.get('http://localhost/modelos/serviciosLibreria.php', {
 
             params: {
                 accion: 'consultarDisponibilidad',
@@ -253,7 +246,7 @@ axios.get('http://sci.unimundial.edu.mx/modelos/serviciosLibreria.php', {
 
     const getPlanteles = () => {
 
-        axios.get('http://sci.unimundial.edu.mx/modelos/serviciosLibreria.php', {
+        axios.get('http://localhost/modelos/serviciosLibreria.php', {
     
         params: {
             accion: 'consultarlibro',
@@ -265,7 +258,7 @@ axios.get('http://sci.unimundial.edu.mx/modelos/serviciosLibreria.php', {
         
         _data.append('libro', response.data.ISBN);
 
-        let res = axios.post('http://sci.unimundial.edu.mx/modelos/serviciosLibreria.php?accion=getPlanteles', _data)
+        let res = axios.post('http://localhost/modelos/serviciosLibreria.php?accion=getPlanteles', _data)
 
         res.then((response) => {
             setPlanteles(response.data);
@@ -386,7 +379,7 @@ axios.get('http://sci.unimundial.edu.mx/modelos/serviciosLibreria.php', {
                     data.append('fechaSolicitud', moment().format('YYYY-MM-DD'));
                     data.append('idAlumno', datos2.chrClave);
 
-                    axios.post('http://sci.unimundial.edu.mx/modelos/serviciosLibreria.php?accion=solicitarLibro', data)
+                    axios.post('http://localhost/modelos/serviciosLibreria.php?accion=solicitarLibro', data)
                     .then(res => {
 
                         if(res.data.response == true){

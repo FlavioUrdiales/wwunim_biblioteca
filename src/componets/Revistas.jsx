@@ -27,7 +27,7 @@ const Revistas = () => {
     const [revistas, setRevistas] = useState([])
        
       const consultarevistas = async () => {
-        const res = await axios.get('http://sci.unimundial.edu.mx/modelos/serviciosLibreria.php?accion=consultarevistas');
+        const res = await axios.get('http://localhost/modelos/serviciosLibreria.php?accion=consultarevistas');
         const data = await res.data;
         console.log(data);
         setRevistas(data);
