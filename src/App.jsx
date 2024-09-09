@@ -18,7 +18,7 @@ function App() {
 
   const [login, setLogin] = useState(false)
   const [data, setData] = useState([])
-  const [tipeUser, setTipeUser] = useState('')
+  const [tipeUser, setTipeUser] = useState('') 
 
   useEffect(() => {
     const datos = JSON.parse(sessionStorage.getItem('datos'))
@@ -38,7 +38,8 @@ function App() {
                 count++
               }
             }
-            //si los dos arreglos son iguales
+
+            //si los dos arreglos son iguales 
             if (count == array1.length) {
               setLogin(true)
               if (response.data.bibliotecario == true) {
