@@ -26,11 +26,15 @@ const Libros = () => {
 
   const [books, setBooks] = useState([])
        
+
       const consultarlibros = async () => {
-        const res = await axios.get('http://localhost/modelos/serviciosLibreria.php?accion=consultarlibros') 
+        const res = await axios.get('http://localhost/modelos/serviciosLibreria.php?accion=consultarlibros');
         const data = await res.data;
         let dataFinal = data.length > 0 ? data : []
+        console.log(dataFinal);
         setBooks(dataFinal);
+
+
     
      }
 

@@ -81,16 +81,6 @@ axios.get('http://localhost/modelos/serviciosLibreria.php', {
     }, [])
 
 
-
-
-
-
-
-    
-
-
-
-
     const consultarDisponibilidad = () => {
         axios.get('http://localhost/modelos/serviciosLibreria.php', {
 
@@ -379,7 +369,7 @@ axios.get('http://localhost/modelos/serviciosLibreria.php', {
                     data.append('fechaSolicitud', moment().format('YYYY-MM-DD'));
                     data.append('idAlumno', datos2.chrClave);
 
-                    axios.post('http://localhost/modelos/serviciosLibreria.php?accion=solicitarLibro', data)
+                    axios.post('http:/localhost/modelos/serviciosLibreria.php?accion=solicitarLibro', data)
                     .then(res => {
 
                         if(res.data.response == true){
